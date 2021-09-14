@@ -1,15 +1,14 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, createContext } from 'react';
 
-const ThemeContext = React.createContext({
+const ThemeContext = createContext({
     isDark: false,
     toggleTheme: () => { }
 });
 
-
 const useTheme = () => {
     const context = useContext(ThemeContext);
     if (!context) {
-        throw new Error('useTheme-ny ThemeProvider-in icinde ulanyn!');
+        throw new Error('context must be used inside a functional component');
     }
     return context;
 };
@@ -20,17 +19,12 @@ const useDarkThemeEffect = () => {
         hasThemeLoaded: false
     });
 
-
     useEffect(() => {
         const lsDark = localStorage.getItem('isDark') === 'true';
         if (lsDark) {
             document.querySelector('body').classList.add('dark');
         }
-        setThemeState({
-            ...themeState,
-            isDark: lsDark,
-            hasThemeLoaded: true
-        });
+        setThemeState({ ...themeState, isDark: lsDark, hasThemeLoaded: true });
     }, []);
 
     return { themeState, setThemeState };
@@ -45,7 +39,11 @@ const ThemeProvider = ({ children }) => {
         const isDark = !themeState.isDark;
         localStorage.setItem('isDark', JSON.stringify(isDark));
         const bodyEl = document.querySelector('body');
-        isDark ? bodyEl.classList.add('dark') : bodyEl.classList.remove('dark');
+        if (isDark) {
+            bodyEl.classList.add('dark');
+        } else {
+            bodyEl.classList.remove('dark');
+        }
         setThemeState({ ...themeState, isDark });
     };
 

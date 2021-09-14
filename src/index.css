@@ -11,3 +11,27 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+
+:root {
+  --bg-color: #fff;
+  --text-color: #000;
+}
+
+[data-theme="dark"] {
+  --bg-color: #3F3F3F;
+  --text-color: #fff;
+}
+
+
+html, #root {
+  background-color: var(--dark-background);
+  color: var(--dark-text);
+}
+nav {
+  background-color: var(--dark-background);
+  color: var(--light-text);
+}
+.main-container {
+  background-color: var(--light-background);
+}
